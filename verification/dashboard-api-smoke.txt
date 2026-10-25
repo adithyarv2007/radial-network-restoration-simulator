@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\adith\Documents\radial-network-restoration-simulator\tests\smoke-test.py", line 131, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\adith\Documents\radial-network-restoration-simulator\tests\smoke-test.py", line 59, in main
+    raise RuntimeError(f"DashboardServer exited early:\n{output}")
+RuntimeError: DashboardServer exited early:
+Exception in thread "main" java.io.IOException: Missing scenarios/sample-network.txt. Start from the project root.
+	at DashboardServer.<init>(DashboardServer.java:36)
+	at DashboardServer.main(DashboardServer.java:50)
+
