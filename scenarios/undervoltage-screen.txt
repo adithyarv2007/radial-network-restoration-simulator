@@ -1,0 +1,9 @@
+# title: Undervoltage screening
+# Close line 1, then line 2. The simplified LinDistFlow screen should report undervoltage.
+BUSES 3
+1 0 0 0 1 12.47 10000 1.0
+2 1500 1000 10 0 12.47 0 1.0
+3 1500 1000 10 0 12.47 0 1.0
+LINES 2
+1 1 2 3.5 4.0 10000 0 0
+2 2 3 3.5 4.0 10000 0 0

@@ -1,0 +1,29 @@
+INITIAL STATE - initial configuration accepted
+  Component 1: buses [1,2,3] | ENERGIZED (source bus 1) | P=500.00 kW, Q=250.00 kVAr, customers=130
+      violations: none
+  Network unserved: P=0.00 kW, Q=0.00 kVAr, customers=0 | electrical violations=0
+ACCEPTED: OPEN(1) - line opened; topology updated
+  Component 1: buses [1] | ENERGIZED (source bus 1) | P=0.00 kW, Q=0.00 kVAr, customers=0
+      violations: none
+  Component 2: buses [2,3] | DE-ENERGIZED ISLAND | P=500.00 kW, Q=250.00 kVAr, customers=130
+      violations: none
+  Network unserved: P=500.00 kW, Q=250.00 kVAr, customers=130 | electrical violations=0
+ACCEPTED: CLOSE(3) - line closed; topology updated
+  Component 1: buses [1,2,3] | ENERGIZED (source bus 1) | P=500.00 kW, Q=250.00 kVAr, customers=130
+      violations: none
+  Network unserved: P=0.00 kW, Q=0.00 kVAr, customers=0 | electrical violations=0
+REJECTED: CLOSE(1) - cycle detected: both endpoints already belong to the same radial tree
+ACCEPTED: FAULT(2) - line faulted and auto-opened; locked out
+  Component 1: buses [1,3] | ENERGIZED (source bus 1) | P=300.00 kW, Q=150.00 kVAr, customers=80
+      violations: none
+  Component 2: buses [2] | DE-ENERGIZED ISLAND | P=200.00 kW, Q=100.00 kVAr, customers=50
+      violations: none
+  Network unserved: P=200.00 kW, Q=100.00 kVAr, customers=50 | electrical violations=0
+REJECTED: MALFORMED('PULSE 3') - unknown operation 'PULSE'
+REJECTED: MALFORMED('CLOSE abc') - lineId is not an integer
+==== SWITCHING PLAN SUMMARY ====
+Commands: total=6, accepted=3, rejected=3
+Initial unserved: P=0.00 kW, Q=0.00 kVAr, customers=0
+Final unserved:   P=200.00 kW, Q=100.00 kVAr, customers=50
+Final electrical screen: PASSED (no violations)
+This is a linearized planning screen, not a safety certification or an SCADA command.

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Radial Network Restoration Simulator</title>
+  <link rel="stylesheet" href="/web/styles.css">
+  <script defer src="/web/app.js"></script>
+  <script defer src="/web/vendor/three.min.js"></script>
+  <script defer src="/web/scene3d.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M7 19.5 16.5 5h5L16 15.5h12L15.5 31h-5L17 20H7z" fill="currentColor"/></svg></div>
+        <div><div class="brand-title">GridLab</div><div class="brand-subtitle">RADIAL RESTORATION SIMULATOR</div></div>
+      </div>
+      <div class="topbar-right"><span class="live-dot"></span><span id="connection-label">Connecting to local engine…</span><span class="engine-pill">JAVA · ETT + AVL</span></div>
+    </header>
+
+    <main class="page">
+      <section class="page-heading">
+        <div>
+          <div class="eyebrow">DYNAMIC NETWORK ANALYSIS</div>
+          <h1>Outage &amp; restoration workspace</h1>
+          <p class="subtitle">Evaluate switching plans, monitor disconnected demand, and inspect topology and electrical screening results.</p>
+        </div>
+        <div class="heading-actions">
+          <button class="btn btn-outline" id="verify-button">↻ Re-run checks</button>
+          <button class="btn btn-outline" id="reset-button">Reset scenario</button>
+          <a class="btn btn-primary" href="/api/report.csv">↓ Export report</a>
+        </div>
+      </section>
+
+      <section class="toolbar panel">
+        <div class="scenario-picker">
+          <label for="scenario-select">Scenario</label>
+          <select id="scenario-select" aria-label="Load sample scenario"></select>
+        </div>
+        <div class="scenario-description" id="scenario-description">Loading scenario…</div>
+        <div class="custom-upload">
+          <label class="btn btn-outline file-button" for="network-file">Open network file</label>
+          <input type="file" id="network-file" accept=".txt,.network,text/plain">
+          <span class="hint">BUSES / LINES text format</span>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Network summary">
+        <article class="kpi-card"><div class="kpi-label">Unserved active demand</div><div class="kpi-value"><span id="unserved-kw">—</span><small>kW</small></div><div class="kpi-foot" id="unserved-kvar">— kVAr reactive demand</div></article>
+        <article class="kpi-card"><div class="kpi-label">Disconnected customers</div><div class="kpi-value" id="unserved-customers">—</div><div class="kpi-foot">Customers in de-energized islands</div></article>
+        <article class="kpi-card"><div class="kpi-label">Electrical warnings</div><div class="kpi-value" id="warning-count">—</div><div class="kpi-foot" id="warning-foot">LinDistFlow screening</div></article>
+        <article class="kpi-card"><div class="kpi-label">Switching operations</div><div class="kpi-value"><span id="accepted-count">—</span><small>accepted</small></div><div class="kpi-foot"><span id="rejected-count">—</span> rejected · <span id="command-count">—</span> total</div></article>
+      </section>
+
+      <section class="main-grid">
+        <article class="panel network-panel">
+          <div class="panel-heading">
+            <div><h2>Live network topology</h2><p>Tap a line in the diagram to select it.</p></div>
+            <div class="legend"><span><i class="legend-line closed"></i>Closed</span><span><i class="legend-line open"></i>Open</span><span><i class="legend-line fault"></i>Faulted</span><span><i class="legend-node source"></i>Substation</span></div>
+          </div>
+          <div id="diagram-wrap" class="diagram-wrap"><svg id="network-diagram" viewBox="0 0 900 430" role="img" aria-label="Distribution network diagram"></svg><div class="diagram-empty" id="diagram-empty">Waiting for network data…</div></div>
+          <div class="diagram-foot"><span id="network-counts">— buses · — lines</span><span id="topology-status" class="status-chip">Awaiting engine</span></div>
+        </article>
+
+        <article class="panel control-panel">
+          <div class="panel-heading"><div><h2>Switching controls</h2><p>Each command is executed by the Java simulator.</p></div></div>
+          <form id="operation-form" class="operation-form">
+            <label for="operation-select">Operation</label>
+            <select id="operation-select"><option value="OPEN">OPEN — disconnect line</option><option value="CLOSE">CLOSE — connect line</option><option value="FAULT">FAULT — mark line faulted</option><option value="CLEAR_FAULT">CLEAR_FAULT — clear fault</option></select>
+            <label for="line-select">Switch / line</label>
+            <select id="line-select"></select>
+            <button class="btn btn-primary btn-wide" type="submit">Execute operation <span>→</span></button>
+          </form>
+          <div id="last-action" class="action-result neutral"><span class="result-icon">i</span><div><strong>Ready</strong><p>Load a scenario to begin.</p></div></div>
+          <div class="control-note"><strong>Model boundary</strong><p>Topology rules are enforced first. Electrical warnings are a simplified LinDistFlow planning screen, not a protection or SCADA system.</p></div>
+        </article>
+      </section>
+
+      <section class="panel scene-panel">
+        <div class="panel-heading">
+          <div><h2>3D network view</h2><p>Drag to rotate. Click a bus or line to act on it.</p></div>
+          <div class="legend">
+            <span><i class="legend-line closed"></i>Closed</span>
+            <span><i class="legend-line open"></i>Open</span>
+            <span><i class="legend-line fault"></i>Faulted</span>
+            <span><i class="legend-node source"></i>Substation</span>
+          </div>
+        </div>
+        <div id="scene3d" class="scene3d"></div>
+        <div id="scene3d-info" class="scene3d-info">Click a line or bus in the 3D view to act on it.</div>
+      </section>
+
+      <section class="details-grid">
+        <article class="panel components-panel"><div class="panel-heading"><div><h2>Connected components</h2><p>Component aggregates and source status from the latest simulator evaluation.</p></div></div><div class="table-wrap"><table><thead><tr><th>Component</th><th>Buses</th><th>State</th><th>Demand</th><th>Customers</th><th>Warnings</th></tr></thead><tbody id="components-body"><tr><td colspan="6" class="empty-cell">Waiting for simulation…</td></tr></tbody></table></div></article>
+        <article class="panel line-panel"><div class="panel-heading"><div><h2>Line status</h2><p>Current switch and fault state.</p></div></div><div class="table-wrap"><table><thead><tr><th>Line</th><th>Endpoints</th><th>State</th><th>Action</th></tr></thead><tbody id="lines-body"><tr><td colspan="4" class="empty-cell">Waiting for network…</td></tr></tbody></table></div></article>
+      </section>
+
+      <section class="panel history-panel"><div class="panel-heading"><div><h2>Operation history</h2><p>Audit trail for this browser session. Reset clears the current scenario history.</p></div><span id="history-count" class="count-pill">0 steps</span></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Operation</th><th>Result</th><th>Unserved demand</th><th>Customers</th><th>Message</th></tr></thead><tbody id="history-body"><tr><td colspan="6" class="empty-cell">No operations yet.</td></tr></tbody></table></div></section>
+      <footer><span>GridLab · DSA case study interface</span><span>Runs locally on 127.0.0.1 · No CDN or external API calls</span></footer>
+    </main>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
+</body>
+</html>
