@@ -1,0 +1,13 @@
+# title: Load transfer between substations
+# Open line 2 to isolate bus 3, then close tie line 3 to transfer it to source bus 4.
+BUSES 5
+1 0 0 0 1 12.47 5000 1.0
+2 100 50 10 0 12.47 0 1.0
+3 200 100 20 0 12.47 0 1.0
+4 0 0 0 1 12.47 5000 1.0
+5 0 0 0 0 12.47 0 1.0
+LINES 4
+1 1 2 0.01 0.01 5000 1 0
+2 2 3 0.01 0.01 5000 1 0
+3 3 5 0.01 0.01 5000 0 0
+4 4 5 0.01 0.01 5000 1 0
