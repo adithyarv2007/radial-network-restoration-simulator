@@ -1,0 +1,62 @@
+=== ADVERSARIAL AUDIT TESTS ===
+  [PASS] A-01 singleton tour: correct P/Q/cust/src
+  [PASS] A-01 singleton invariant
+  [PASS] A-02 tour length 3n-2 for n=10 path
+  [PASS] A-03 cut returns true for valid active edge
+  [PASS] A-03 buses disconnected after cut
+  [PASS] A-03 invariant after cut
+  [PASS] A-04 cut on null line returns false
+  [PASS] A-05 link on already-connected pair returns false
+  [PASS] A-05 invariant after duplicate link attempt
+  [PASS] A-06 bus 0 singleton P after cut
+  [PASS] A-06 bus 1 singleton P after cut
+  [PASS] A-06 not connected after cut
+  [PASS] A-06 invariant after cut
+  [PASS] A-07 star aggregate P correct
+  [PASS] A-07 star aggregate Q correct
+  [PASS] A-07 star aggregate customers correct
+  [PASS] A-07 star sourceCount == 1
+  [PASS] A-07 invariant
+  [PASS] A-08 path aggregate P = 80
+  [PASS] A-08 invariant
+  [PASS] A-09 cut with reversed endpoints returns true
+  [PASS] A-09 buses disconnected after reversed cut
+  [PASS] A-09 invariant after reversed cut
+  [PASS] A-10 AVL height of 128-bus chain <= 14 (actual: 9)
+  [PASS] A-10 invariant
+  [PASS] A-11 first OPEN accepted
+  [PASS] A-11 second OPEN on same line rejected
+  [PASS] A-11 invariant
+  [PASS] A-12 first CLOSE accepted
+  [PASS] A-12 second CLOSE rejected (cycle)
+  [PASS] A-12 invariant
+  [PASS] A-13 FAULT on already-faulted line rejected
+  [PASS] A-14 CLEAR_FAULT on healthy line rejected
+  [PASS] A-15 faulted+closed line forced open: bus 2 unserved (100 kW)
+  [PASS] A-15 CLOSE 1 rejected because faulted
+  [PASS] A-15 invariant
+  [PASS] A-16 self-loop line causes initError
+  [PASS] A-17 zero buses/lines: no NPE at construction
+  [PASS] A-18 FAULT on open line accepted
+  [PASS] A-18 CLOSE rejected while faulted
+  [PASS] A-18 CLEAR_FAULT accepted
+  [PASS] A-18 CLOSE accepted after clear
+  [PASS] A-18 invariant
+  [PASS] A-19 initial unserved 0 (two energized islands)
+  [PASS] A-19 tie-close rejected (two sources)
+  [PASS] A-19 invariant after rejection
+  [PASS] A-20 source at exact capacity: no SOURCE_OVERLOAD
+  [PASS] A-21 zBase unit check: zero-load yields no voltage violation
+  [PASS] A-22 voltage drop formula: v=0.95 pu is not flagged (at limit)
+  [PASS] A-23 line power flow unit: 500 kVA > 499 kVA triggers overload
+  [PASS] A-24 source at 1.06 pu flags OVERVOLTAGE
+  [PASS] A-25 de-energized island has isEnergized=false, 0 violations
+  [PASS] A-26 demand not double-counted after relink: total P=300
+  [PASS] A-27 unserved after cut(2-3): buses 3+4 = 500 kW
+  [PASS] A-27 invariant
+  [PASS] A-28 star-64 AVL height <= 12 (actual: 9)
+  [PASS] A-28 star invariant
+  [PASS] A-29 sortKey no collisions for boundary IDs
+  [PASS] A-30 randomized source-count: 0 mismatches over 500 steps
+
+ADVERSARIAL RESULT: 59 passed, 0 failed

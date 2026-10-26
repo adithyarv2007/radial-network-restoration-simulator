@@ -1,0 +1,139 @@
+== Scenario tests (topology, electrical screen, rejections) ==
+  [PASS] TC-01 initial state fully energized
+  [PASS] TC-01 OPEN 1 accepted
+  [PASS] TC-01 unserved = 500 kW, 250 kVAr, 130 customers
+  [PASS] TC-01 two components
+  [PASS] TC-02 CLOSE 3 accepted
+  [PASS] TC-02 service restored: unserved 0
+  [PASS] TC-02 one energized component
+  [PASS] TC-03 CLOSE 3 rejected as a cycle
+  [PASS] TC-03 topology unchanged after rejection
+  [PASS] TC-04 CLOSE 3 rejected for two sources
+  [PASS] TC-04 both islands stay separate
+  [PASS] TC-05 FAULT 2 (closed) accepted and auto-opened
+  [PASS] TC-05 FAULT 3 (open) accepted, topology unchanged
+  [PASS] TC-06 CLOSE 2 rejected while faulted
+  [PASS] TC-06 CLEAR_FAULT 2 accepted, line stays open, unserved still 300
+  [PASS] TC-06 CLOSE 2 accepted after clearing; unserved 0
+  [PASS] TC-07 OPEN 2 accepted; bus 3 de-energized (200 kW)
+  [PASS] TC-07 CLOSE 3 transfers bus 3 to substation 4; unserved 0
+  [PASS] TC-08 OPEN 1 accepted after two re-links
+  [PASS] TC-08 island {3} isolated, unserved 100 kW
+  [PASS] TC-08 energized component {1,2,4} carries 200 kW
+  [PASS] TC-08 ETT invariants hold after rank-ordered cut
+  [PASS] TC-09 hub bus 2 reconnected
+  [PASS] TC-09 aggregate exactly 600 kW, 300 kVAr, 60 customers
+  [PASS] TC-10 CLOSE 1 accepted topologically
+  [PASS] TC-10 LINE_OVERLOAD reported with 1000.00 kVA flow
+  [PASS] TC-10 violation count is 1
+  [PASS] TC-11 both CLOSE commands accepted
+  [PASS] TC-11 UNDERVOLTAGE flagged at bus 2
+  [PASS] TC-11 UNDERVOLTAGE flagged at bus 3
+  [PASS] TC-12 CLOSE 2 accepted topologically
+  [PASS] TC-12 SOURCE_OVERLOAD reported at 2000.00 kVA
+  [PASS] TC-13 four invalid or redundant commands rejected
+  [PASS] TC-13 zero state changes after rejections
+  [PASS] TC-14 illegal cycle close rejected
+  [PASS] TC-14 illegal multi-source close rejected
+  [PASS] TC-14 invariants hold after two rejections
+  [PASS] TC-14 CLOSE 4 succeeds after OPEN 1
+  [PASS] TC-14 final unserved 0 kW
+== Euler Tour Tree stress and reference comparison ==
+  [PASS] TC-15 chain stress: 189 link/cut ops, all invariants hold, max AVL height 8 <= 11
+  [PASS] RAND 3000 steps (427 links, 418 cuts) match reference; 0 mismatches, 0 invariant failures
+
+RESULT: 41 passed, 0 failed
+  
+=== ADVERSARIAL AUDIT TESTS ===
+  [PASS] A-01 singleton tour: correct P/Q/cust/src
+  [PASS] A-01 singleton invariant
+  [PASS] A-02 tour length 3n-2 for n=10 path
+  [PASS] A-03 cut returns true for valid active edge
+  [PASS] A-03 buses disconnected after cut
+  [PASS] A-03 invariant after cut
+  [PASS] A-04 cut on null line returns false
+  [PASS] A-05 link on already-connected pair returns false
+  [PASS] A-05 invariant after duplicate link attempt
+  [PASS] A-06 bus 0 singleton P after cut
+  [PASS] A-06 bus 1 singleton P after cut
+  [PASS] A-06 not connected after cut
+  [PASS] A-06 invariant after cut
+  [PASS] A-07 star aggregate P correct
+  [PASS] A-07 star aggregate Q correct
+  [PASS] A-07 star aggregate customers correct
+  [PASS] A-07 star sourceCount == 1
+  [PASS] A-07 invariant
+  [PASS] A-08 path aggregate P = 80
+  [PASS] A-08 invariant
+  [PASS] A-09 cut with reversed endpoints returns true
+  [PASS] A-09 buses disconnected after reversed cut
+  [PASS] A-09 invariant after reversed cut
+  [PASS] A-10 AVL height of 128-bus chain <= 14 (actual: 9)
+  [PASS] A-10 invariant
+  [PASS] A-11 first OPEN accepted
+  [PASS] A-11 second OPEN on same line rejected
+  [PASS] A-11 invariant
+  [PASS] A-12 first CLOSE accepted
+  [PASS] A-12 second CLOSE rejected (cycle)
+  [PASS] A-12 invariant
+  [PASS] A-13 FAULT on already-faulted line rejected
+  [PASS] A-14 CLEAR_FAULT on healthy line rejected
+  [PASS] A-15 faulted+closed line forced open: bus 2 unserved (100 kW)
+  [PASS] A-15 CLOSE 1 rejected because faulted
+  [PASS] A-15 invariant
+  [PASS] A-16 self-loop line causes initError
+  [PASS] A-17 zero buses/lines: no NPE at construction
+  [PASS] A-18 FAULT on open line accepted
+  [PASS] A-18 CLOSE rejected while faulted
+  [PASS] A-18 CLEAR_FAULT accepted
+  [PASS] A-18 CLOSE accepted after clear
+  [PASS] A-18 invariant
+  [PASS] A-19 initial unserved 0 (two energized islands)
+  [PASS] A-19 tie-close rejected (two sources)
+  [PASS] A-19 invariant after rejection
+  [PASS] A-20 source at exact capacity: no SOURCE_OVERLOAD
+  [PASS] A-21 zBase unit check: zero-load yields no voltage violation
+  [PASS] A-22 voltage drop formula: v=0.95 pu is not flagged (at limit)
+  [PASS] A-23 line power flow unit: 500 kVA > 499 kVA triggers overload
+  [PASS] A-24 source at 1.06 pu flags OVERVOLTAGE
+  [PASS] A-25 de-energized island has isEnergized=false, 0 violations
+  [PASS] A-26 demand not double-counted after relink: total P=300
+  [PASS] A-27 unserved after cut(2-3): buses 3+4 = 500 kW
+  [PASS] A-27 invariant
+  [PASS] A-28 star-64 AVL height <= 12 (actual: 9)
+  [PASS] A-28 star invariant
+  [PASS] A-29 sortKey no collisions for boundary IDs
+  [PASS] A-30 randomized source-count: 0 mismatches over 500 steps
+
+ADVERSARIAL RESULT: 59 passed, 0 failed
+  
+=== STATIC ANALYSIS PROBES ===
+  [PASS] PROBE-01 split leaves each root with parent==null
+  [PASS] PROBE-02 join3(null,mid,null) leaves singleton aggregate correct
+  [PASS] PROBE-03 join3 one-null side: aggregate P=60
+  [PASS] PROBE-03 invariant
+  [PASS] PROBE-04 extractRightmost on singleton: re-link succeeds
+  [PASS] PROBE-05 reroot when already first: invariant holds
+  [PASS] PROBE-06 reroot when last: invariant holds
+  [PASS] PROBE-06 aggregate still P=30
+  [PASS] PROBE-07 cut with mismatched endpoints returns false
+  [PASS] PROBE-07 topology unchanged after failed cut
+  [PASS] PROBE-08 sortKey with large index stays positive (no sign overflow)
+  [PASS] PROBE-08 keyIndex recovers index correctly
+  [PASS] PROBE-09 two components formed correctly
+  [PASS] PROBE-09 each component has exactly one source
+  [PASS] PROBE-10 second cut succeeds
+  [PASS] PROBE-10 component {0,1,4} P=500
+  [PASS] PROBE-10 component {2,3} P=500
+  [PASS] PROBE-10 invariant after mixed ops
+  [PASS] PROBE-11 checkInvariants returns null for valid tree
+  [PASS] PROBE-11 checkInvariants returns null for 3 singletons
+  [PASS] PROBE-12 leaf height=1
+  [PASS] PROBE-12 leaf size=1
+  [PASS] PROBE-12 leaf P=50
+  [PASS] PROBE-12 leaf sources=0
+  [PASS] PROBE-13 rebalance at root (parent=null): no NPE
+  [PASS] PROBE-14 cyclic walk property verified by checkInvariants
+  [PASS] PROBE-15 alternating link/cut 20 times: aggregates always correct
+
+STATIC PROBES RESULT: 27 passed, 0 failed

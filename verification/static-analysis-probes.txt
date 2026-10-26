@@ -1,0 +1,30 @@
+=== STATIC ANALYSIS PROBES ===
+  [PASS] PROBE-01 split leaves each root with parent==null
+  [PASS] PROBE-02 join3(null,mid,null) leaves singleton aggregate correct
+  [PASS] PROBE-03 join3 one-null side: aggregate P=60
+  [PASS] PROBE-03 invariant
+  [PASS] PROBE-04 extractRightmost on singleton: re-link succeeds
+  [PASS] PROBE-05 reroot when already first: invariant holds
+  [PASS] PROBE-06 reroot when last: invariant holds
+  [PASS] PROBE-06 aggregate still P=30
+  [PASS] PROBE-07 cut with mismatched endpoints returns false
+  [PASS] PROBE-07 topology unchanged after failed cut
+  [PASS] PROBE-08 sortKey with large index stays positive (no sign overflow)
+  [PASS] PROBE-08 keyIndex recovers index correctly
+  [PASS] PROBE-09 two components formed correctly
+  [PASS] PROBE-09 each component has exactly one source
+  [PASS] PROBE-10 second cut succeeds
+  [PASS] PROBE-10 component {0,1,4} P=500
+  [PASS] PROBE-10 component {2,3} P=500
+  [PASS] PROBE-10 invariant after mixed ops
+  [PASS] PROBE-11 checkInvariants returns null for valid tree
+  [PASS] PROBE-11 checkInvariants returns null for 3 singletons
+  [PASS] PROBE-12 leaf height=1
+  [PASS] PROBE-12 leaf size=1
+  [PASS] PROBE-12 leaf P=50
+  [PASS] PROBE-12 leaf sources=0
+  [PASS] PROBE-13 rebalance at root (parent=null): no NPE
+  [PASS] PROBE-14 cyclic walk property verified by checkInvariants
+  [PASS] PROBE-15 alternating link/cut 20 times: aggregates always correct
+
+STATIC PROBES RESULT: 27 passed, 0 failed

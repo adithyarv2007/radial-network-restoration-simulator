@@ -1,0 +1,45 @@
+== Scenario tests (topology, electrical screen, rejections) ==
+  [PASS] TC-01 initial state fully energized
+  [PASS] TC-01 OPEN 1 accepted
+  [PASS] TC-01 unserved = 500 kW, 250 kVAr, 130 customers
+  [PASS] TC-01 two components
+  [PASS] TC-02 CLOSE 3 accepted
+  [PASS] TC-02 service restored: unserved 0
+  [PASS] TC-02 one energized component
+  [PASS] TC-03 CLOSE 3 rejected as a cycle
+  [PASS] TC-03 topology unchanged after rejection
+  [PASS] TC-04 CLOSE 3 rejected for two sources
+  [PASS] TC-04 both islands stay separate
+  [PASS] TC-05 FAULT 2 (closed) accepted and auto-opened
+  [PASS] TC-05 FAULT 3 (open) accepted, topology unchanged
+  [PASS] TC-06 CLOSE 2 rejected while faulted
+  [PASS] TC-06 CLEAR_FAULT 2 accepted, line stays open, unserved still 300
+  [PASS] TC-06 CLOSE 2 accepted after clearing; unserved 0
+  [PASS] TC-07 OPEN 2 accepted; bus 3 de-energized (200 kW)
+  [PASS] TC-07 CLOSE 3 transfers bus 3 to substation 4; unserved 0
+  [PASS] TC-08 OPEN 1 accepted after two re-links
+  [PASS] TC-08 island {3} isolated, unserved 100 kW
+  [PASS] TC-08 energized component {1,2,4} carries 200 kW
+  [PASS] TC-08 ETT invariants hold after rank-ordered cut
+  [PASS] TC-09 hub bus 2 reconnected
+  [PASS] TC-09 aggregate exactly 600 kW, 300 kVAr, 60 customers
+  [PASS] TC-10 CLOSE 1 accepted topologically
+  [PASS] TC-10 LINE_OVERLOAD reported with 1000.00 kVA flow
+  [PASS] TC-10 violation count is 1
+  [PASS] TC-11 both CLOSE commands accepted
+  [PASS] TC-11 UNDERVOLTAGE flagged at bus 2
+  [PASS] TC-11 UNDERVOLTAGE flagged at bus 3
+  [PASS] TC-12 CLOSE 2 accepted topologically
+  [PASS] TC-12 SOURCE_OVERLOAD reported at 2000.00 kVA
+  [PASS] TC-13 four invalid or redundant commands rejected
+  [PASS] TC-13 zero state changes after rejections
+  [PASS] TC-14 illegal cycle close rejected
+  [PASS] TC-14 illegal multi-source close rejected
+  [PASS] TC-14 invariants hold after two rejections
+  [PASS] TC-14 CLOSE 4 succeeds after OPEN 1
+  [PASS] TC-14 final unserved 0 kW
+== Euler Tour Tree stress and reference comparison ==
+  [PASS] TC-15 chain stress: 189 link/cut ops, all invariants hold, max AVL height 8 <= 11
+  [PASS] RAND 3000 steps (427 links, 418 cuts) match reference; 0 mismatches, 0 invariant failures
+
+RESULT: 41 passed, 0 failed
